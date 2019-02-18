@@ -2,9 +2,10 @@
 FROM google/dart AS build-env
 
 ENV PUB = "$HOME/.pub-cache/bin"
-ENV WEBDEV = "$HOME/.pub-cache/bin/webdev"
 
 WORKDIR /app
+
+RUN echo "Starting production setup"
 
 ADD pubspec.* /app/
 RUN pub get
@@ -18,9 +19,5 @@ FROM nginx:stable
 COPY --from=build-env /app/build /usr/share/nginx/html
 COPY default.conf /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/nginx.conf
-
-# RUN touch /var/run/nginx.pid && \
-#   chown angular:angular /var/run/nginx.pid && \
-#   chown -R angular:angular /var/cache/nginx
 
 EXPOSE 8080

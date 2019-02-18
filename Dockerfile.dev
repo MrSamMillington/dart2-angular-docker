@@ -1,0 +1,17 @@
+
+FROM google/dart AS build-env
+
+ENV PUB = "$HOME/.pub-cache/bin"
+
+WORKDIR /app
+
+RUN echo "in dev env"
+
+ADD pubspec.* /app/
+RUN pub get
+RUN pub get --offline
+RUN pub global activate webdev
+
+COPY init.sh init.sh
+
+EXPOSE 8080
